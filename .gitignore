@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Local data
+input/
+output/
+*.poppler.xml
+batch_report.csv
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
