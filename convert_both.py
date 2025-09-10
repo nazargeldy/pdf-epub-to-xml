@@ -9,12 +9,16 @@ IN_DIR  = Path("input")
 OUT_DIR = Path("output")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-def run(cmd: str):
-    return subprocess.run(shlex.split(cmd), capture_output=True, text=True)
+def run_args(args: list[str]):
+    """Run a command by passing a list of args. Works reliably on Windows paths."""
+    return subprocess.run(args, capture_output=True, text=True)
 
 def looks_scanned_pdf(pdf_path: Path) -> bool:
     probe_xml = OUT_DIR / (pdf_path.stem + "._probe.xml")
-    res = run(f'{POPPLER} -xml -enc UTF-8 "{pdf_path}" "{probe_xml}"')
+    res = run_args([
+    POPPLER, "-xml", "-enc", "UTF-8",
+    str(pdf_path), str(probe_xml)
+    ])
     tiny_or_missing = (not probe_xml.exists()) or probe_xml.stat().st_size < 5000
     if probe_xml.exists():
         probe_xml.unlink(missing_ok=True)
@@ -22,10 +26,14 @@ def looks_scanned_pdf(pdf_path: Path) -> bool:
 
 def pdf_to_poppler_xml(pdf_path: Path) -> Path:
     out_xml = OUT_DIR / (pdf_path.stem + ".poppler.xml")
-    res = run(f'{POPPLER} -xml -enc UTF-8 "{pdf_path}" "{out_xml}"')
+    res = run_args([
+    POPPLER, "-xml", "-enc", "UTF-8",
+    str(pdf_path), str(out_xml)
+    ])
     if res.returncode != 0 or not out_xml.exists():
         raise RuntimeError(res.stderr or "pdftohtml failed")
     return out_xml
+
 
 def normalize_poppler(poppler_xml: Path) -> Path:
     tree = ET.parse(poppler_xml)
