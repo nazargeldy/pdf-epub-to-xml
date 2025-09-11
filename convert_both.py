@@ -33,8 +33,6 @@ def pdf_to_poppler_xml(pdf_path: Path) -> Path:
     if res.returncode != 0 or not out_xml.exists():
         raise RuntimeError(res.stderr or "pdftohtml failed")
     return out_xml
-
-
 def normalize_poppler(poppler_xml: Path) -> Path:
     tree = ET.parse(poppler_xml)
     root = tree.getroot()
@@ -113,6 +111,7 @@ def normalize_epub_to_xml(epub_path: Path) -> Path:
     out = OUT_DIR / (epub_path.stem + ".xml")
     out.write_text(soup.prettify(), encoding="utf-8")
     return out
+
 
 def convert_all():
     rows = []
