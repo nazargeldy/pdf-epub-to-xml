@@ -111,8 +111,6 @@ def normalize_epub_to_xml(epub_path: Path) -> Path:
     out = OUT_DIR / (epub_path.stem + ".xml")
     out.write_text(soup.prettify(), encoding="utf-8")
     return out
-
-
 def convert_all():
     rows = []
     IN_DIR.mkdir(exist_ok=True)
