@@ -192,8 +192,6 @@ def main():
     (book_dir / "batch_report.csv").write_text(
         "file,type,status\n" + f"{src.name},{in_type},ok\n", encoding="utf-8"
     )
-
-    # 5) Validate well-formedness (schema validation can be added when available)
     ok1, e1 = validate_wellformed(book_dir / "book.xml")
     errors = []
     if not ok1: errors.append(("book.xml", e1))
