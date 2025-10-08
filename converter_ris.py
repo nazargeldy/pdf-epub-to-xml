@@ -102,7 +102,8 @@ def parse_poppler_xml_to_chapters(poppler_xml: Path):
             for ptxt in chunk[1:]:
                 ch.append(new_elem("p", ptxt))
         chapters.append(ch)
-    if not chapters:  # fallback: single chapter
+    if not chapters: 
+        
         ch = new_elem("chapter", attrib={"id": "ch0001"})
         for pg in pages:
             for t in pg.find_all("text"):
