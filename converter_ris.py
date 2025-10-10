@@ -87,7 +87,6 @@ def parse_poppler_xml_to_chapters(poppler_xml: Path):
             txt = t.get_text(" ", strip=True)
             if not txt: 
                 continue
-            # crude chapter boundary detection
             if re.match(r"^(chapter\s+\d+|[A-Z0-9 ,.'/-]{8,})$", txt.strip(), re.IGNORECASE):
                 flush()
                 buf.append(txt)  # keep heading
